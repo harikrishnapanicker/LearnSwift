@@ -36,7 +36,7 @@ class ViewModel {
     }
     
     func downloadImageAt(index: Int) -> Data? {
-        let imageUrl = URL(string: imagelinks2[index])! // URL(string: baseUrl+imageLinks[index])!
+        let imageUrl = URL(string: baseUrl+imageLinks[index])!
         do {
             return try Data(contentsOf: imageUrl)
         } catch {
@@ -52,22 +52,22 @@ class ViewModel {
     }
     
     // BlockOperation
-//    func startDownloading(completion: @escaping() -> Void) {
-//        let operation = BlockOperation()
-//        operation.addExecutionBlock {
-//            for i in 0..<10 {
-//                if let data = self.downloadImageAt(index: i) {
-//                    self.dataDict[i] = data
-//                    completion()
-//                    sleep(2)
-//                }
-//            }
-//        }
-//        operation.start()
-//    }
+    func downloadUsingBlockOperation(completion: @escaping() -> Void) {
+        let operation = BlockOperation()
+        operation.addExecutionBlock {
+            for i in 0..<10 {
+                if let data = self.downloadImageAt(index: i) {
+                    self.dataDict[i] = data
+                    completion()
+                    sleep(2)
+                }
+            }
+        }
+        operation.start()
+    }
     
     //OperationQueue
-    func startDownloading(completion: @escaping() -> Void) {
+    func downloadUsingOperationQueue(completion: @escaping() -> Void) {
         let queue = OperationQueue()
         queue.addOperation {
             for i in 0..<10 {
@@ -78,6 +78,20 @@ class ViewModel {
                 }
             }
         }
-        queue.maxConcurrentOperationCount = 4
+        queue.maxConcurrentOperationCount = 3
+    }
+    
+    // DispatchQueue : Concurrent
+    func downloadUsingDispatchQueue(completion: @escaping() -> Void) {
+        let concurrentQueue = DispatchQueue(label: "concurrentqueue", attributes: .concurrent)
+        concurrentQueue.async {
+            for i in 0..<10 {
+                if let data = self.downloadImageAt(index: i) {
+                    self.dataDict[i] = data
+                    completion()
+                    sleep(2)
+                }
+            }
+        }
     }
 }

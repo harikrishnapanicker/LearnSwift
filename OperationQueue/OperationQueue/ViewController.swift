@@ -12,14 +12,30 @@ class ViewController: UIViewController {
     @IBOutlet private var tableview: UITableView!
     
     let viewModel = ViewModel()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableview.reloadData()
-        viewModel.startDownloading {
+        
+//        viewModel.downloadUsingBlockOperation {
+//            DispatchQueue.main.async {
+//                self.tableview.reloadData()
+//            }
+//        }
+        
+//        viewModel.downloadUsingOperationQueue {
+//            DispatchQueue.main.async {
+//                self.tableview.reloadData()
+//            }
+//        }
+        
+        viewModel.downloadUsingDispatchQueue {
             DispatchQueue.main.async {
                 self.tableview.reloadData()
             }
         }
+        
+        
     }
 }
 
