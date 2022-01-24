@@ -20,6 +20,15 @@ class ViewModel {
                       "/c/10/537ba5ff07aa4/standard_xlarge.jpg",
                       "/c/10/537babe1c1f66/standard_xlarge.jpg",
                       "/2/60/537bcaef0f6cf/standard_xlarge.jpg",]
+    let imagelinks2 = ["https://c4.wallpaperflare.com/wallpaper/128/887/619/spider-man-marvel-comics-comics-spider-wallpaper-preview.jpg", "https://c4.wallpaperflare.com/wallpaper/224/829/129/digital-digital-art-artwork-illustration-simple-hd-wallpaper-preview.jpg",
+                       "https://c4.wallpaperflare.com/wallpaper/591/844/1024/spider-man-spider-video-games-superhero-wallpaper-preview.jpg",
+                       "https://c4.wallpaperflare.com/wallpaper/584/718/481/spider-man-marvel-comics-black-background-superhero-wallpaper-preview.jpg",
+                       "https://c4.wallpaperflare.com/wallpaper/143/344/969/spider-man-homecoming-2017-spider-man-marvel-comics-new-york-city-wallpaper-preview.jpg",
+                       "https://c4.wallpaperflare.com/wallpaper/713/116/34/spider-man-wallpaper-preview.jpg",
+                       "https://c4.wallpaperflare.com/wallpaper/713/116/34/spider-man-wallpaper-preview.jpg",
+                       "https://c4.wallpaperflare.com/wallpaper/857/388/968/iron-man-marvel-comics-superhero-the-avengers-wallpaper-preview.jpg",
+                       "https://c4.wallpaperflare.com/wallpaper/776/211/785/iron-man-marvel-comics-superhero-tony-stark-wallpaper-preview.jpg",
+                       "https://c4.wallpaperflare.com/wallpaper/392/924/950/iron-man-marvel-comics-artwork-simple-background-wallpaper-preview.jpg"]
     
     var dataDict = [Int: Data]()
     
@@ -27,7 +36,7 @@ class ViewModel {
     }
     
     func downloadImageAt(index: Int) -> Data? {
-        let imageUrl = URL(string: baseUrl+imageLinks[index])!
+        let imageUrl = URL(string: imagelinks2[index])! // URL(string: baseUrl+imageLinks[index])!
         do {
             return try Data(contentsOf: imageUrl)
         } catch {
@@ -42,16 +51,33 @@ class ViewModel {
         return nil
     }
     
+    // BlockOperation
+//    func startDownloading(completion: @escaping() -> Void) {
+//        let operation = BlockOperation()
+//        operation.addExecutionBlock {
+//            for i in 0..<10 {
+//                if let data = self.downloadImageAt(index: i) {
+//                    self.dataDict[i] = data
+//                    completion()
+//                    sleep(2)
+//                }
+//            }
+//        }
+//        operation.start()
+//    }
+    
+    //OperationQueue
     func startDownloading(completion: @escaping() -> Void) {
-        let operation = BlockOperation()
-        operation.addExecutionBlock {
+        let queue = OperationQueue()
+        queue.addOperation {
             for i in 0..<10 {
                 if let data = self.downloadImageAt(index: i) {
                     self.dataDict[i] = data
                     completion()
+                    sleep(2)
                 }
             }
         }
-        operation.start()
+        queue.maxConcurrentOperationCount = 4
     }
 }
