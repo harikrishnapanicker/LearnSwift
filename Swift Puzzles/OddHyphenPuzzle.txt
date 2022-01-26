@@ -1,0 +1,57 @@
+String Challenge
+Have the function StringChallenge(str) insert dashes ('-') between each two odd numbers in str. For example: if str is 454793 the output should be 4547-9-3. Don't count zero as an odd number.
+Once your function is working, take the final output string and concatenate it with your ChallengeToken, and then replace every fourth character with an underscore. 
+ 
+Your ChallengeToken: k6hxw2qtg7d5
+ 
+Examples
+Input: 99946 
+Output: 9-9-946 
+Final Output: 9-9_946_6hx_2qt_7d5
+Input: 56730 
+Output: 567-30 
+Final Output: 567_30k_hxw_qtg_d5
+
+
+
+
+Answer
+---------------------------------------------
+
+
+import Foundation
+
+func stringReplace(numberString: String) -> String {
+    let numberArray = numberString.map({Int(String($0)) })
+    var newArray = [String]()
+    var prevVal: Int?
+    for currentVal in numberArray {
+        if (prevVal != nil) {
+            if prevVal! % 2 != 0 && currentVal! % 2 != 0 {
+                newArray.append("-")
+            }
+            newArray.append(String(currentVal!))
+        } else {
+            newArray.append(String(currentVal!))
+        }
+        prevVal = currentVal
+    }
+    return newArray.joined()
+}
+
+func addToken(token:String, numberString: String) -> String {
+    let newString = token + numberString
+    var stringArray = newString.map({ String($0) })
+    for i in 0..<stringArray.count {
+        if i%4 == 0 {
+            stringArray[i] = "_"
+        }
+    }
+    return stringArray.joined()
+}
+
+let output = stringReplace(numberString: "45347911113")
+let token = "k6hxw2qtg7d5"
+let finalOutput = addToken(token: token, numberString: output)
+print("output : \(output)")
+print("finalOutput: \(finalOutput)")
