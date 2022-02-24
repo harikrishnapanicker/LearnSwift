@@ -1,0 +1,6 @@
+framework module Pods_CollectionViewSections {
+  umbrella header "Pods-CollectionViewSections-umbrella.h"
+
+  export *
+  module * { export * }
+}

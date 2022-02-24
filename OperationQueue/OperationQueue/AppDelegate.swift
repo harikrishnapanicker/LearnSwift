@@ -13,6 +13,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        var userDefaults = UserDefaults(suiteName: "group.testing")
+        if let testUserId = userDefaults?.object(forKey: "userId") as? String {
+          print("User Id: \(testUserId)")
+        }
         // Override point for customization after application launch.
         return true
     }
